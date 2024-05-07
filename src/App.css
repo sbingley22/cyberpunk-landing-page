@@ -17,3 +17,26 @@
 .canvas {
   width: 100%;
 }
+
+.hero-html {
+  background-color: #222222;
+  color: #11FF11;
+  border: 5px green solid;
+  width: 500px;
+  padding: 2px;
+}
+
+.hero-html p {
+  padding: 12px;
+  padding-top: 0px;
+}
+.hero-html h2 {
+  padding: 12px;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+.hero-html h4 {
+  padding: 12px;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
