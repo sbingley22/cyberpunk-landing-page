@@ -2,6 +2,7 @@ import { Canvas } from "@react-three/fiber"
 import { Suspense, useRef } from "react"
 import Lucy from "./Lucy"
 import { Environment, OrbitControls } from "@react-three/drei"
+import ShadowCatcher from "./ShadowCatcher"
 
 const Game = () => {
   const lucyAnim = useRef("Idle")
@@ -11,18 +12,28 @@ const Game = () => {
       <Canvas
         className="canvas"
         shadows
+        dpr={0.2}
       >
         <Suspense>
           <OrbitControls
-            minAzimuthAngle={-Math.PI / 4} // Limit horizontal rotation to -45 degrees
-            maxAzimuthAngle={Math.PI / 4} // Limit horizontal rotation to 45 degrees
-            minPolarAngle={Math.PI / 6} // Limit vertical rotation to 30 degrees
-            maxPolarAngle={Math.PI - Math.PI / 6} // Limit vertical rotation to 150 degrees
+            minAzimuthAngle={-Math.PI / 8}
+            maxAzimuthAngle={Math.PI / 8}
+            minPolarAngle={Math.PI * 0.4}
+            maxPolarAngle={Math.PI * 0.6}
+            enablePan={false}
+            minDistance={3}
+            maxDistance={4}
           />
 
-          <Environment preset="sunset" />
+          <group position={[0,-2,2]} rotation-y={Math.PI} >
+            <Environment preset="sunset" />
+            <directionalLight intensity={0.5} position={[0,5,1]} castShadow />
 
-          <Lucy anim={lucyAnim} />
+            <ShadowCatcher />
+
+            <Lucy anim={lucyAnim} />
+
+          </group>
 
         </Suspense>
       </Canvas>
