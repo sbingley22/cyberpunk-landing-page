@@ -36,7 +36,14 @@ const Lucy = ({ anim }) => {
 
   // Mixer
   useEffect(()=>{
-    const oneShots = ["Pistol Fire"]
+    const oneShots = [
+      "Pistol Fire", 
+      "DancingRight", 
+      "DancingLeft", 
+      "DancingUp", 
+      "DancingDown", 
+      "DancingTwirl"
+    ]
 
     oneShots.forEach( (shot) => {
       actions[shot].repetitions = 1
@@ -45,7 +52,10 @@ const Lucy = ({ anim }) => {
 
     mixer.addEventListener('finished', () => {
       if (anim.current == "Pistol Fire") anim.current = "Pistol Aim"
-      else if (anim.current == "danceLeft") anim.current = "dancing"
+      else if (anim.current == "DancingLeft") anim.current = "Dancing"
+      else if (anim.current == "DancingRight") anim.current = "Dancing"
+      else if (anim.current == "DancingUp") anim.current = "Dancing"
+      else if (anim.current == "DancingDown") anim.current = "Dancing"
     })
 
     return () => mixer.removeEventListener('finished')
@@ -78,7 +88,7 @@ const Lucy = ({ anim }) => {
   })
 
   return (
-    <group ref={group}>
+    <group ref={group} position-x={0.5}>
       <primitive object={scene} dispose={null} />
     </group>
   )

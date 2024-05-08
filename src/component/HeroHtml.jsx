@@ -4,7 +4,7 @@ import { Html } from '@react-three/drei'
 import HeroPage from './HeroPage'
 import AboutPage from './AboutPage'
 
-const HeroHtml = ({ page, setPage }) => {
+const HeroHtml = ({ page, setPage, isMobile }) => {
   const xStyle = {
     textAlign: "right",
     position: "absolute",
@@ -19,8 +19,8 @@ const HeroHtml = ({ page, setPage }) => {
   if (page == "dance") return
 
   return (
-    <group position={[1.2,4,1]}>
-      <Html className='hero-html'>
+    <group position={isMobile ? [3.0, 8.0, 9] : [0,8,9]}>
+      <Html className={isMobile ? 'hero-html mobile' : 'hero-html'}>
         <button 
           onClick={()=>setPage(null)}
           style={xStyle}

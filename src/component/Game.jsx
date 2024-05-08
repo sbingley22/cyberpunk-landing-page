@@ -9,20 +9,38 @@ import Node from "./Node"
 import TargetPractice from "./TargetPractice"
 import Dancing from "./Dancing"
 
-const Game = () => {
+const Game = ({ isMobile }) => {
   // eslint-disable-next-line no-unused-vars
-  const [lowEndDevice, setLowEndDevice] = useState(false)
   const [page, setPage] = useState(null)
 
   const lucyAnim = useRef("Idle")
+
+  const resistDisorderRef = useRef(null)
+  const gunshotRef = useRef(null)
+  const reloadRef = useRef(null)
+
+  // Sounds
+  useEffect(()=>{
+    reloadRef.current.volume = 0.5
+    gunshotRef.current.volume = 0.3
+    resistDisorderRef.current.volume = 0.6
+  }, [reloadRef, gunshotRef, resistDisorderRef])
   
   // Click Events
   useEffect(() => {
     const handleClick = () => {
       if (page == "target") {
         lucyAnim.current = "Pistol Fire"
+        gunshotRef.current.currentTime = 0
+        gunshotRef.current.play()
+        //console.log(gunshotRef.current)
       }
 
+      if (page == "dance") {
+        resistDisorderRef.current.play()
+      } else {
+        resistDisorderRef.current.pause()
+      }
     }
     
     document.addEventListener('click', handleClick)
@@ -50,7 +68,7 @@ const Game = () => {
       <Canvas
         className="canvas"
         shadows
-        dpr={lowEndDevice ? 0.2 : 0.6}
+        dpr={isMobile ? 0.8 : 2}
       >
         <Suspense fallback={null}>
           <OrbitControls
@@ -58,9 +76,11 @@ const Game = () => {
             maxAzimuthAngle={Math.PI / 8}
             minPolarAngle={Math.PI * 0.4}
             maxPolarAngle={Math.PI * 0.6}
-            enablePan={false}
             minDistance={3}
             maxDistance={4}
+            enablePan={false}
+            //enableRotate={page == "hero" ? false : page == "about" ? false : true}
+            enableZoom={page == "hero" ? false : page == "about" ? false : true}
           />
 
           <group position={[0,-2,2]} rotation-y={Math.PI} >
@@ -71,14 +91,14 @@ const Game = () => {
 
             <Lucy anim={lucyAnim} />
 
-            <HeroHtml page={page} setPage={setPage} />
+            <HeroHtml page={page} setPage={setPage} isMobile={isMobile} />
 
             { page == "target" &&
               <TargetPractice />
             }
 
             { page == "dance" &&
-              <Dancing />
+              <Dancing lucyAnim={lucyAnim} reloadRef={reloadRef} />
             }
 
           </group>
@@ -113,6 +133,16 @@ const Game = () => {
 
         </Suspense>
       </Canvas>
+
+      <audio ref={gunshotRef}>
+        <source src="./gunshot.wav" type="audio/wav" />
+      </audio>
+      <audio ref={reloadRef}>
+        <source src="./reload.wav" type="audio/wav" />
+      </audio>
+      <audio ref={resistDisorderRef} loop>
+        <source src="./resistDisorder.m4a" type="audio/mp4" />
+      </audio>
     </div>
   )
 }

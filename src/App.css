@@ -25,6 +25,11 @@
   width: 500px;
   padding: 2px;
 }
+.hero-html.mobile {
+  width: 300px;
+  height: 600px;
+  overflow: scroll;
+}
 
 .hero-html p {
   padding: 12px;
